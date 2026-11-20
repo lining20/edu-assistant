@@ -1,0 +1,23 @@
+id: learning_progress
+version: 1
+name: 学习进度查询
+description: 用户想查询本人某个班次的出勤、视频、作业或考试进度。
+
+steps:
+  - id: start
+    type: entry
+    next: collect_cohort
+
+  - id: collect_cohort
+    type: collect
+    any_of: [cohort_name, cohort_id]
+    prompt: 请选择你要查询的班次，也可以手动输入班次名称。
+    next: query_learning_progress
+
+  - id: query_learning_progress
+    type: action
+    action: query_learning_progress
+    next: end
+
+  - id: end
+    type: end

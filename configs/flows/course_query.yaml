@@ -1,0 +1,23 @@
+id: course_query
+version: 1
+name: 课程咨询
+description: 用户想了解课程内容、适用人群、班次安排或价格。
+
+steps:
+  - id: start
+    type: entry
+    next: collect_course
+
+  - id: collect_course
+    type: collect
+    any_of: [course_keyword, series_id]
+    prompt: 请选择想了解的课程，也可以手动输入课程名称。
+    next: query_courses
+
+  - id: query_courses
+    type: action
+    action: query_courses
+    next: end
+
+  - id: end
+    type: end

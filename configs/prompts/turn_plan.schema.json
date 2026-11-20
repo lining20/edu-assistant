@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TurnPlan",
+  "description": "教育客服单轮规划结果。三个轨道至多选一个，全为 null 表示需要澄清。",
+  "type": "object",
+  "properties": {
+    "task": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/task"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "knowledge": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/knowledge"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "chitchat": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/chitchat"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "task",
+    "knowledge",
+    "chitchat"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "task": {
+            "type": "object"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "knowledge": {
+            "type": "null"
+          },
+          "chitchat": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "knowledge": {
+            "type": "object"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "chitchat": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "task": {
+      "type": "object",
+      "properties": {
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/command"
+          }
+        }
+      },
+      "required": [
+        "commands"
+      ],
+      "additionalProperties": false
+    },
+    "knowledge": {
+      "type": "object",
+      "properties": {
+        "intents": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "intents"
+      ],
+      "additionalProperties": false
+    },
+    "chitchat": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "command": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "command": {
+              "const": "start_flow"
+            },
+            "flow": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "command",
+            "flow"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "command": {
+              "const": "set_slots"
+            },
+            "slots": {
+              "type": "object",
+              "minProperties": 1,
+              "propertyNames": {
+                "type": "string",
+                "minLength": 1
+              },
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  {
+                    "type": "integer"
+                  }
+                ]
+              }
+            }
+          },
+          "required": [
+            "command",
+            "slots"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "command": {
+              "enum": [
+                "cancel_task",
+                "resume_task"
+              ]
+            },
+            "task_id": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "command",
+            "task_id"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,44 @@
+id: ticket_create
+version: 1
+name: 工单提交
+description: 用户明确要求提交售后、投诉或退款跟进工单。收集后只引导到业务页面。
+
+steps:
+  - id: start
+    type: entry
+    next: collect_ticket_type
+
+  - id: collect_ticket_type
+    type: collect
+    slot: ticket_type
+    prompt: 请选择工单类型：售后、投诉或退款。
+    next: collect_order
+
+  - id: collect_order
+    type: collect
+    any_of: [order_number, order_id]
+    prompt: 请选择要关联的订单，也可以手动输入订单号。
+    next: collect_description
+
+  - id: collect_description
+    type: collect
+    slot: ticket_description
+    prompt: 请描述一下需要客服处理的问题。
+    next: collect_refund_request
+
+  - id: collect_refund_request
+    type: collect
+    slot: refund_request_id
+    when:
+      slot: ticket_type
+      equals: refund
+    prompt: 请选择要关联的退款申请，也可以手动输入申请 ID。
+    next: handoff
+
+  - id: handoff
+    type: handoff
+    target: ticket_service
+    next: end
+
+  - id: end
+    type: end

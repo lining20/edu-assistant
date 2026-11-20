@@ -1,0 +1,32 @@
+id: refund_apply
+version: 2
+name: 退款申请
+description: 用户明确要求办理退款申请。核验本人订单后，直接引导至退款表单；咨询退款政策或条件时走知识问答。
+
+steps:
+  - id: start
+    type: entry
+    next: collect_order
+
+  - id: collect_order
+    type: collect
+    any_of: [order_number, order_id]
+    prompt: 请选择要申请退款的订单，也可以手动输入订单号。
+    next: check_order_status
+
+  - id: check_order_status
+    type: guard
+    check: order_status
+    reject_when:
+      equals: cancelled
+    retry: collect_order
+    prompt: 该订单已取消，不能通过客服申请退款。请重新选择订单，或输入其他订单号。
+    next: handoff
+
+  - id: handoff
+    type: handoff
+    target: refund_application_page
+    next: end
+
+  - id: end
+    type: end

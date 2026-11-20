@@ -1,0 +1,23 @@
+id: order_query
+version: 1
+name: 订单查询
+description: 用户想查询本人已有订单的状态、支付情况或金额。
+
+steps:
+  - id: start
+    type: entry
+    next: collect_order
+
+  - id: collect_order
+    type: collect
+    any_of: [order_number, order_id]
+    prompt: 请选择你要查询的订单，也可以手动输入订单号。
+    next: query_order
+
+  - id: query_order
+    type: action
+    action: query_order
+    next: end
+
+  - id: end
+    type: end

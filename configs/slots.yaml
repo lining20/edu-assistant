@@ -1,0 +1,79 @@
+order_number:
+  type: text
+  label: 订单号
+  description: 用户提供的订单编号，和订单对象 ID 分开存储。
+
+order_id:
+  type: identifier
+  label: 订单 ID
+  description: 订单对象的内部 ID，使用前核验归属。
+  object_type: order
+
+course_keyword:
+  type: text
+  label: 课程关键词
+  description: 用户提供的课程名称或搜索关键词。
+
+series_id:
+  type: identifier
+  label: 课程系列 ID
+  description: 课程系列对象的内部 ID。
+  object_type: series
+
+cohort_name:
+  type: text
+  label: 班次名称
+  description: 用户提供的班次名称，从本人班次中匹配。
+
+cohort_id:
+  type: identifier
+  label: 班次 ID
+  description: 班次对象的内部 ID，查询前核验归属。
+  object_type: cohort
+
+order_item_id:
+  type: identifier
+  label: 订单明细 ID
+  description: 由业务动作解析并核验的订单明细 ID。
+  source: action
+
+refund_reason:
+  type: text
+  label: 退款原因
+  description: 用户明确提供的申请退款原因。
+
+refund_type:
+  type: text
+  label: 退款类型
+  description: 用户用自己的话描述的退款情形。保留原话，不归类，不要求固定选项。
+
+refund_amount:
+  type: decimal
+  label: 申请金额
+  description: 用户明确提供的退款申请金额，使用十进制定点数。
+
+ticket_type:
+  type: enum
+  label: 工单类型
+  description: 用户要创建的工单分类。
+  values:
+    after_sales: 售后
+    complaint: 投诉
+    refund: 退款
+
+ticket_description:
+  type: text
+  label: 问题描述
+  description: 用户希望通过工单反映的问题。
+
+student_id:
+  type: identifier
+  label: 学员档案 ID
+  description: 由业务动作根据当前登录身份查得的学员档案 ID。
+  source: action
+
+refund_request_id:
+  type: identifier
+  label: 退款申请 ID
+  description: 已发起的退款申请引用，提交退款工单前核验归属及订单明细关联。
+  object_type: refund_request
